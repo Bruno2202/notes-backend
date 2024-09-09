@@ -7,14 +7,15 @@ import { Params } from "../routes/userRoutes.js";
 export class UserController {
     static async select(reply: FastifyReply) {
         try {
-            const users: UserModel[] | null = await UserDAL.select();
+            const users: UserModel[] | null = await UserService.select();
 
             if (users) {
                 reply.code(200).send(users);
             } else {
                 reply.code(404).send({ error: "Users not found" });
             }
-        } catch (error) {
+        } catch (error: any) {
+            console.log(`Erro ao obter usuários: ${error.message}`);
             reply.status(500).send({ error: "Internal server error" });
         }
     }
@@ -101,7 +102,6 @@ export class UserController {
                     reply.code(500).send({ error: "Internal server error" });
                     break;
             }
-            return false;
         }
     }
 

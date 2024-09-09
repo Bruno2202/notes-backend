@@ -1,15 +1,18 @@
-import { fastify, FastifyReply, FastifyRequest } from 'fastify'
-import { UserController } from "./controllers/UserController.js";
-import fastifyCors from "@fastify/cors";
+import { fastify } from 'fastify'
 import { DB } from './dal/DB.js';
+import fastifyCors from "@fastify/cors";
 import userRoutes from './routes/userRoutes.js';
+import tokenRoutes from './routes/tokenRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 const server = fastify();
 
-console.log("Hello world");
 DB.dbTime();
+// console.log(TokenService.generateToken());
 
 server.register(userRoutes);
+server.register(tokenRoutes);
+server.register(authRoutes);
 
 server.register(fastifyCors, {
     origin: true,

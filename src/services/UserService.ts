@@ -2,6 +2,20 @@ import { UserDAL } from "../dal/UserDAL.js";
 import { UserModel } from "../models/UserModel.js";
 
 export class UserService {
+    static async select(): Promise<UserModel[] | null> {
+        try {
+            const users: UserModel[] | null = await UserDAL.select();
+            
+            if (users) {
+                return users;
+            }
+
+            return null;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
     static async selectById(id: number): Promise<UserModel | null> {
         if (!UserService.isvalidId(id)) {
             throw new Error('ID inválido para busca');
@@ -106,10 +120,9 @@ export class UserService {
                 throw new Error('Não existe usuário com o ID informado');
             }
 
-            // const deletedUser: boolean = await UserDAL.delete(id);
+            const deletedUser: boolean = await UserDAL.delete(id);
 
-            // return deletedUser;
-            return true;
+            return deletedUser;
         } catch (error: any) {
             throw new Error(error.message);
         }

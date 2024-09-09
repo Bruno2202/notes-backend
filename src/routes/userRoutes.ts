@@ -1,7 +1,6 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { UserController } from "../controllers/UserController.js";
 import { UserModel } from "../models/UserModel.js";
-import { request } from "http";
 
 export interface Params {
     user: UserModel;
@@ -24,6 +23,10 @@ export default async function userRoutes(fastify: FastifyInstance) {
 
     fastify.post('/usuarios', async (request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) => {
         await UserController.registrer(request, reply);
+    });
+    
+    fastify.post('/usuarios/validar', async (request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) => {
+        await UserController.delete(request, reply);
     });
 
     fastify.put('/usuarios', async (request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) => {
