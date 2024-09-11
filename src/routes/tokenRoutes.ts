@@ -17,4 +17,8 @@ export default async function tokenRoutes(fastify: FastifyInstance) {
     fastify.post('/token/generate', async (request: FastifyRequest<{ Body: TokenRequestBody }>, reply: FastifyReply) => {
         TokenController.generateToken(request, reply);
     });
+
+    fastify.post('/token/data', async (request: FastifyRequest<{ Body: TokenRequestBody }>, reply: FastifyReply) => {
+        TokenController.getTokenData(request, reply);
+    });
 }

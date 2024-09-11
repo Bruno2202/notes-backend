@@ -1,12 +1,16 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const JW_SECRET: string = process.env.JW_SECRET!;
 
 export class TokenService {
     static generateToken(user: { id: number, email: string }): string {
         const payload = { id: user.id, email: user.email };
-        const token = jwt.sign(payload, JW_SECRET!, { expiresIn: '1h' });
+        const token = jwt.sign(payload, JW_SECRET!);
         return token;
+    }
+
+    static getTokenData(token: string): JwtPayload {
+        return jwt.verify(token, JW_SECRET!) as JwtPayload;
     }
 
     static validateToken(token: string | undefined): boolean {
