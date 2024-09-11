@@ -8,7 +8,6 @@ import authRoutes from './routes/authRoutes.js';
 const server = fastify();
 
 DB.dbTime();
-// console.log(TokenService.generateToken());
 
 server.register(userRoutes);
 server.register(tokenRoutes);

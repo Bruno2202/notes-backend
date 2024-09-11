@@ -8,6 +8,16 @@ export interface Params {
     email: string;
 }
 
+export interface UserRequestBody {
+    user: {
+        name: string;
+        email: string;
+        password: string;
+        id?: number; 
+        userPic?: string | null;
+    }
+}
+
 export default async function userRoutes(fastify: FastifyInstance) {
     fastify.get('/usuarios', async (request: FastifyRequest, reply: FastifyReply) => {
         await UserController.select(reply);
@@ -21,15 +31,15 @@ export default async function userRoutes(fastify: FastifyInstance) {
         await UserController.selectByEmail(request, reply);
     });
 
-    fastify.post('/usuarios', async (request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) => {
+    fastify.post('/usuarios', async (request: FastifyRequest<{ Body: UserRequestBody }>, reply: FastifyReply) => {
         await UserController.registrer(request, reply);
     });
     
-    fastify.post('/usuarios/validar', async (request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) => {
-        await UserController.delete(request, reply);
+    fastify.post('/usuarios/validar', async (request: FastifyRequest<{ Body: UserRequestBody }>, reply: FastifyReply) => {
+        await UserController.validateFields(request, reply);
     });
 
-    fastify.put('/usuarios', async (request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) => {
+    fastify.put('/usuarios', async (request: FastifyRequest<{ Body: UserRequestBody }>, reply: FastifyReply) => {
         await UserController.update(request, reply);
     });
 

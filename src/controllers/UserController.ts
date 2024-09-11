@@ -1,8 +1,7 @@
 import { UserService } from "../services/UserService.js";
 import { UserModel } from "../models/UserModel.js";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UserDAL } from "../dal/UserDAL.js";
-import { Params } from "../routes/userRoutes.js";
+import { Params, UserRequestBody } from "../routes/userRoutes.js";
 
 export class UserController {
     static async select(reply: FastifyReply) {
@@ -66,9 +65,17 @@ export class UserController {
         }
     }
 
-    static async update(request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) {
+    static async update(request: FastifyRequest<{ Body: UserRequestBody }>, reply: FastifyReply) {
+        const requestUser = new UserModel(
+            request.body.user.name,
+            request.body.user.email,
+            request.body.user.password,
+            request.body.user.id,
+            request.body.user.userPic
+        );
+
         try {
-            const updatedUser: UserModel | null = await UserService.update(request.params.user);
+            const updatedUser: UserModel | null = await UserService.update(requestUser);
 
             if (updatedUser) {
                 reply.code(200).send(updatedUser);
@@ -80,34 +87,62 @@ export class UserController {
         }
     }
 
-    static async validateFields(request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) {
-        try {
-            const validUser = await UserService.validateFields(request.params.user);
+    static async validateFields(request: FastifyRequest<{ Body: UserRequestBody }>, reply: FastifyReply) {
+        const requestUser = new UserModel(
+            request.body.user.name,
+            request.body.user.email,
+            request.body.user.password,
+            request.body.user.id,
+            request.body.user.userPic
+        );
 
-            if (validUser) {
-                reply.code(200).send(validUser);
+        try {
+            const isValid = await UserService.validateFields(requestUser);
+
+            if (isValid) {
+                reply.code(200).send({
+                    message: "Credenciais válidas",
+                    isValid: isValid
+                });
             } else {
-                reply.code(400).send({ error: "Invalid credentials" });
+                reply.code(400).send({ 
+                    error: "Credenciais inválidas",
+                    isValid: isValid
+                });
             }
         } catch (error: any) {
             switch (error.message) {
                 case 'Email inválido':
                 case 'Senha inválida': 
-                case 'Usuário já existe':
-                    reply.code(400).send({ error: error.message });
+                case 'Email já utilizado':
+                    reply.code(400).send({ 
+                        error: error.message,
+                        isValid: false
+                    });
                     break;
 
                 default:
                     console.log("Erro ao verificar usuário:", error.message);
-                    reply.code(500).send({ error: "Internal server error" });
+                    reply.code(500).send({ 
+                        error: "Internal server error",
+                        isValid: false
+                    });
                     break;
             }
         }
     }
 
-    static async registrer(request: FastifyRequest<{ Params: Params }>, reply: FastifyReply) {
+    static async registrer(request: FastifyRequest<{ Body: UserRequestBody }>, reply: FastifyReply) {
+        const requestUser = new UserModel(
+            request.body.user.name,
+            request.body.user.email,
+            request.body.user.password,
+            request.body.user.id,
+            request.body.user.userPic
+        );
+
         try {
-            const newUser: UserModel | null = await UserService.registerUser(request.params.user);
+            const newUser: UserModel | null = await UserService.registerUser(requestUser);
 
             if (newUser) {
                 reply.code(201).send({ message: "User created successfulyy", user: newUser });
