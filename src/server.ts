@@ -4,6 +4,7 @@ import fastifyCors from "@fastify/cors";
 import userRoutes from './routes/userRoutes.js';
 import tokenRoutes from './routes/tokenRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import noteRoutes from './routes/noteRoutes.js';
 
 const server = fastify();
 
@@ -12,6 +13,7 @@ DB.dbTime();
 server.register(userRoutes);
 server.register(tokenRoutes);
 server.register(authRoutes);
+server.register(noteRoutes);
 
 server.register(fastifyCors, {
     origin: true,
