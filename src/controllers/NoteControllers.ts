@@ -100,7 +100,10 @@ export class NoteController {
         try {
             const note = await NoteService.create(requestNote);
             if (note) {
-                reply.code(201).send({ message: "Nota criada com sucesso", note: note });
+                reply.code(201).send({
+                    message: "Nota criada com sucesso",
+                    note: note
+                });
             } else {
                 reply.code(400).send({ error: "Não foi possível criar nota" });
             }
@@ -110,5 +113,30 @@ export class NoteController {
         }
     }
 
-    static async delete(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) { }
+    static async delete(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
+        try {
+            const deleted = await NoteService.delete(request.params.id);
+            if (deleted) {
+                reply.code(204).send({
+                    deleted: deleted
+                });
+            }
+
+            console.log(deleted)
+        } catch (error: any) {
+            switch (error.message) {
+                case "ID inválido para solicitação":
+                    reply.code(400).send({
+                        error: error.message,
+                        deleted: false
+                    });
+                    break;
+
+                default:
+                    console.log(`Erro ao deletar nota: ${error.message}`);
+                    reply.code(500).send({ error: "Erro interno do servidor. Tente novamente mais tarde" });
+                    break;
+            }
+        }
+    }
 }

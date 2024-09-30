@@ -79,11 +79,20 @@ export class NoteService {
         }
     }
 
-    static async delete() {
-        try {
+    static async delete(id: number): Promise<boolean> {
+        try {   
+            if (id <= 0) {
+                throw new Error("ID inválido para solicitação");
+            }
 
+            const deleted = await NoteDAL.delete(id); 
+            if (deleted) {
+                return true;
+            }
+
+            return false;
         } catch (error: any) {
-
+            throw new Error(error.message);
         }
     }
 }

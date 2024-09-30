@@ -150,8 +150,8 @@ export class UserDAL {
 
             return false;
         } catch (error: any) {
-            console.log(`Não foi possível delete usuário: ${error.message}`);
-            throw error.message;
+            console.log(`Não foi possível deletar usuário: ${error.message}`);
+            throw new Error(error.message);
         }
     }
 }

@@ -1,4 +1,3 @@
-import { text } from "stream/consumers";
 import { NoteModel } from "../models/NoteModel.js";
 import { DB } from "./DB.js";
 
@@ -24,7 +23,7 @@ export class NoteDAL {
 
             return null;
         } catch (error: any) {
-            console.error("Erro ao selecionar usuários:", error);
+            console.error("Erro ao selecionar notas:", error);
             throw error;
         }
     }
@@ -51,7 +50,7 @@ export class NoteDAL {
 
             return null;
         } catch (error: any) {
-            console.error(`Erro ao buscar usuário: ${error.message}`);
+            console.error(`Erro ao buscar nota: ${error.message}`);
             throw error.message;
         }
     }
@@ -78,7 +77,7 @@ export class NoteDAL {
 
             return null;
         } catch (error: any) {
-            console.error(`Erro ao buscar usuário: ${error.message}`);
+            console.error(`Erro ao buscar notas: ${error.message}`);
             throw error.message;
         }
     }
@@ -105,7 +104,7 @@ export class NoteDAL {
 
             return null;
         } catch (error: any) {
-            console.error(`Erro ao criar usuário: ${error.message}`);
+            console.error(`Erro ao criar nota: ${error.message}`);
             throw error;
         }
     }
@@ -133,16 +132,30 @@ export class NoteDAL {
 
             return null;
         } catch (error: any) {
-            console.log(`Erro ao atualizar usuário: ${error.message}`);
+            console.log(`Erro ao atualizar nota: ${error.message}`);
             throw error;
         }
     }
 
-    static async delete() {
+    static async delete(id: number): Promise<boolean> {
         try {
+            const query = {
+                text: 'DELETE FROM notes WHERE id = $1 RETURNING *;',
+                values: [id]
+            };
 
+            const res = await DB.pool.query(query);
+            console.log(res.rowCount = 0)
+            console.log(res.rowCount)
+
+            if (res.rowCount = 0) {
+                return true;
+            }
+
+            return false;
         } catch (error: any) {
-
+            console.log(`Não foi possível deletar nota: ${error.message}`);
+            throw new Error(error.message);
         }
     }
 }
