@@ -55,11 +55,11 @@ export class NoteDAL {
         }
     }
 
-    static async selectByUserId(useId: number): Promise<NoteModel[] | null> {
+    static async selectByUserId(userId: number): Promise<NoteModel[] | null> {
         try {
             const query = {
-                text: "SELECT * FROM notes WHERE user_id = $1",
-                values: [useId]
+                text: "SELECT * FROM notes WHERE user_id = $1 ORDER BY creation_date DESC",
+                values: [userId]
             }
 
             const res = await DB.pool.query(query);
@@ -77,7 +77,7 @@ export class NoteDAL {
 
             return null;
         } catch (error: any) {
-            console.error(`Erro ao buscar notas: ${error.message}`);
+            console.error(`DAL - Erro ao buscar notas: ${error.message}`);
             throw error.message;
         }
     }
@@ -145,8 +145,6 @@ export class NoteDAL {
             };
 
             const res = await DB.pool.query(query);
-            console.log(res.rowCount = 0)
-            console.log(res.rowCount)
 
             if (res.rowCount = 0) {
                 return true;

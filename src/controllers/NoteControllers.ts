@@ -121,8 +121,6 @@ export class NoteController {
                     deleted: deleted
                 });
             }
-
-            console.log(deleted)
         } catch (error: any) {
             switch (error.message) {
                 case "ID inválido para solicitação":

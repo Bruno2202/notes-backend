@@ -30,7 +30,7 @@ export class NoteService {
 
             return null;
         } catch (error: any) {
-            console.log();
+            console.log(`Erro ao selecionar nota pelo ID: ${error.message}`);
             throw new Error(error.message);
         }
     }
