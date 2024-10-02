@@ -116,8 +116,10 @@ export class NoteController {
     static async delete(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
         try {
             const deleted = await NoteService.delete(request.params.id);
+
             if (deleted) {
-                reply.code(204).send({
+                reply.code(200).send({
+                    message: "Nota deletada com sucesso!",
                     deleted: deleted
                 });
             }

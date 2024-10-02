@@ -146,11 +146,11 @@ export class NoteDAL {
 
             const res = await DB.pool.query(query);
 
-            if (res.rowCount = 0) {
-                return true;
+            if (res.rowCount === 0) {
+                return false;
             }
 
-            return false;
+            return true;
         } catch (error: any) {
             console.log(`Não foi possível deletar nota: ${error.message}`);
             throw new Error(error.message);

@@ -86,11 +86,8 @@ export class NoteService {
             }
 
             const deleted = await NoteDAL.delete(id); 
-            if (deleted) {
-                return true;
-            }
 
-            return false;
+            return deleted;
         } catch (error: any) {
             throw new Error(error.message);
         }
