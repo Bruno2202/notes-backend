@@ -119,7 +119,6 @@ export class NoteDAL {
             const res = await DB.pool.query(query);
 
             if (res.rowCount! > 0) {
-                console.log("Nota atualizada com sucesso!");
                 return new NoteModel(
                     res.rows[0].user_id,
                     res.rows[0].type_id,
