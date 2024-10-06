@@ -33,7 +33,7 @@ export class NoteController {
                     break;
 
                 default:
-                    console.log("Erro ao buscar notas pelo id da nota:", error);
+                    console.log("Erro ao buscar nota pelo id:", error);
                     reply.code(500).send({ error: "Erro interno do servidor" });
                     break;
             }
@@ -79,7 +79,7 @@ export class NoteController {
             if (note) {
                 reply.code(200).send(requestNote);
             } else {
-                reply.code(404).send({ error: "User not found" });
+                reply.code(404).send({ error: "Não foi possível atualizar nota" });
             }
         } catch (error: any) {
             console.log(`Erro ao atualizar nota: ${error.message}`);

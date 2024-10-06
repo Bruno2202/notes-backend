@@ -170,7 +170,7 @@ export class UserController {
             const userDeleted: boolean = await UserService.delete(request.params.id);
 
             if (userDeleted) {
-                reply.code(204).send({ message: "User deleted successfuly" });
+                reply.code(200).send({ message: "User deleted successfuly" });
             }
         } catch (error: any) {
             switch (error.message) {
