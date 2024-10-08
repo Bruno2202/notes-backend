@@ -53,7 +53,7 @@ export class MarkerDAL {
     static async create(marker: MarkerModel): Promise<MarkerModel | null> {
         try {
             const query = {
-                text: 'INSERT INTO markers (user_id, description) VALUES ($1, $2, $3) RETURNING *;',
+                text: 'INSERT INTO markers (user_id, description) VALUES ($1, $2) RETURNING *;',
                 values: [marker.getUserId, marker.getDescription]
             };
 

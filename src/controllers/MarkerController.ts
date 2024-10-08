@@ -100,10 +100,7 @@ export class MarkerController {
             const deleted = await MarkerService.delete(request.params.id);
 
             if (deleted) {
-                reply.code(200).send({
-                    message: "Marcador deletado com sucesso!",
-                    deleted: deleted
-                });
+                reply.code(204);
             }
         } catch (error: any) {
             switch (error.message) {
