@@ -29,10 +29,14 @@ export class MarkerController {
 
     static async selectByUserId(request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) {
         try {
-            const marker: MarkerModel[] | null = await MarkerService.selectByUserId(request.params.userId);
-
-            if (marker) {
-                reply.code(200).send(marker);
+            const markers: MarkerModel[] | null = await MarkerService.selectByUserId(request.params.userId);
+            if (markers) {
+                reply.code(200).send(markers);
+            } else if (markers === null) {
+                reply.code(200).send({ 
+                    markers: markers,
+                    message: "O usuário não possui marcadores" 
+                });
             } else {
                 reply.code(404).send({ error: "Marcadores não encontrados" });
             }
