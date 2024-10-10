@@ -12,11 +12,16 @@ export interface MarkerRequestBody {
 export interface MarkerRequestParams {
     userId: number,
     id: number;
+    noteId: number;
 }
 
 export default async function markerRoutes(fastify: FastifyInstance) {
     fastify.get('/marker/:id', async (request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) => {
         await MarkerController.selectById(request, reply);
+    });
+
+    fastify.get('/marker/note/:noteId', async (request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) => {
+        await MarkerController.selectByNoteId(request, reply);
     });
 
     fastify.get('/marker/user/:userId', async (request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) => {

@@ -50,6 +50,40 @@ export class MarkerDAL {
         }
     }
 
+    static async selectByNoteId(noteId: number): Promise<MarkerModel[] | null> {
+        try {
+            const query = {
+                text: `
+                    SELECT * FROM markers 
+                    JOIN notes_markers 
+                    ON markers.id = notes_markers.marker_id 
+                    WHERE notes_markers.note_id = $1;
+                `,
+                values: [noteId],
+            };
+
+            const res = await DB.pool.query(query);
+
+            if (res.rowCount! > 0) {
+                console.log(res.rows.map(row => new MarkerModel(
+                    row.user_id,
+                    row.description,
+                    row.marker_id
+                )));
+                return res.rows.map(row => new MarkerModel(
+                    row.user_id,
+                    row.description,
+                    row.marker_id
+                ));
+            }
+
+            return null;
+        } catch (error: any) {
+            console.error("Erro ao selecionar marcadores das notas:", error);
+            throw error;
+        }
+    }
+
     static async create(marker: MarkerModel): Promise<MarkerModel | null> {
         try {
             const query = {

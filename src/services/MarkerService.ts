@@ -40,6 +40,21 @@ export class MarkerService {
         }
     }
 
+    static async selectByNoteId(noteId: number): Promise<MarkerModel[] | null> {
+        if (noteId <= 0) {
+            throw new Error("ID inválido para solicitação");
+        }
+
+        try {
+            const noteMarkers: MarkerModel[] | null = await MarkerDAL.selectByNoteId(noteId);
+
+            return noteMarkers;
+        } catch (error: any) {
+            console.log(`Erro ao buscar notas pelo ID do usuário: ${error.message}`);
+            throw new Error(error.message);
+        }
+    }
+
     static async create(marker: MarkerModel): Promise<MarkerModel | null> {
         try {
             const newNote: MarkerModel | null = await MarkerDAL.create(marker);

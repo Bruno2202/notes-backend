@@ -6,6 +6,7 @@ import tokenRoutes from './routes/tokenRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import noteRoutes from './routes/noteRoutes.js';
 import markerRoutes from './routes/markerRoutes.js';
+import notesMarkersRoutes from './routes/notesMarkersRoutes.js';
 
 const server = fastify();
 
@@ -16,6 +17,7 @@ server.register(tokenRoutes);
 server.register(authRoutes);
 server.register(noteRoutes);
 server.register(markerRoutes);
+server.register(notesMarkersRoutes);
 
 server.register(fastifyCors, {
     origin: true,
