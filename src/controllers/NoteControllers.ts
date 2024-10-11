@@ -42,10 +42,10 @@ export class NoteController {
 
     static async selectByUserId(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
         try {
-            const note: NoteModel[] | null = await NoteService.selectByUserId(request.params.userId);
+            const notes: NoteModel[] | null = await NoteService.selectByUserId(request.params.userId);
 
-            if (note) {
-                reply.code(200).send(note);
+            if (notes) {
+                reply.code(200).send(notes);
             } else {
                 reply.code(404).send({ error: "Notas não encontradas" });
             }

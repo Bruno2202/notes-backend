@@ -29,17 +29,12 @@ export class MarkerController {
 
     static async selectByUserId(request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) {
         try {
-            const markers: MarkerModel[] | null = await MarkerService.selectByUserId(request.params.userId);
-            
-            if (markers) {
+            const markers: MarkerModel[] = await MarkerService.selectByUserId(request.params.userId);
+
+            if (markers.length > 0) {
                 reply.code(200).send(markers);
-            } else if (markers === null) {
-                reply.code(200).send({
-                    markers: markers,
-                    message: "O usuário não possui marcadores"
-                });
-            } else {
-                reply.code(404).send({ error: "Marcadores não encontrados" });
+            } else if (markers.length == 0) {
+                reply.code(200).send({ markers: markers });
             }
         } catch (error: any) {
             switch (error.message) {
@@ -57,12 +52,12 @@ export class MarkerController {
 
     static async selectByNoteId(request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) {
         try {
-            const noteMarkers: MarkerModel[] | null = await MarkerService.selectByNoteId(request.params.noteId);
+            const noteMarkers: MarkerModel[] = await MarkerService.selectByNoteId(request.params.noteId);
 
-            if (noteMarkers) {
+            if (noteMarkers.length > 0) {
                 reply.code(200).send(noteMarkers);
-            } else {
-                reply.code(404).send({ error: "Marcadores da nota não encontrados" });
+            } else if (noteMarkers.length == 0) {
+                reply.code(200).send(noteMarkers);
             }
         } catch (error: any) {
             console.log("Erro ao buscar marcadores da nota pelo id da nota:", error.message);

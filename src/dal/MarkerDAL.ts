@@ -26,7 +26,7 @@ export class MarkerDAL {
         }
     }
 
-    static async selectByUserId(userId: number): Promise<MarkerModel[] | null> {
+    static async selectByUserId(userId: number): Promise<MarkerModel[]> {
         try {
             const query = {
                 text: "SELECT * FROM markers WHERE user_id = $1 ORDER BY id DESC",
@@ -43,14 +43,14 @@ export class MarkerDAL {
                 ));
             }
 
-            return null;
+            return [];
         } catch (error: any) {
             console.error(`DAL - Erro ao buscar marcadores: ${error.message}`);
             throw error.message;
         }
     }
 
-    static async selectByNoteId(noteId: number): Promise<MarkerModel[] | null> {
+    static async selectByNoteId(noteId: number): Promise<MarkerModel[]> {
         try {
             const query = {
                 text: `
@@ -65,11 +65,6 @@ export class MarkerDAL {
             const res = await DB.pool.query(query);
 
             if (res.rowCount! > 0) {
-                console.log(res.rows.map(row => new MarkerModel(
-                    row.user_id,
-                    row.description,
-                    row.marker_id
-                )));
                 return res.rows.map(row => new MarkerModel(
                     row.user_id,
                     row.description,
@@ -77,7 +72,7 @@ export class MarkerDAL {
                 ));
             }
 
-            return null;
+            return [];
         } catch (error: any) {
             console.error("Erro ao selecionar marcadores das notas:", error);
             throw error;

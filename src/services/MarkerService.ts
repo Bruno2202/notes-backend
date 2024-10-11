@@ -21,32 +21,32 @@ export class MarkerService {
         }
     }
 
-    static async selectByUserId(userId: number): Promise<MarkerModel[] | null> {
+    static async selectByUserId(userId: number): Promise<MarkerModel[]> {
         if (userId <= 0) {
             throw new Error("ID inválido para solicitação");
         }
 
         try {
-            const marker: MarkerModel[] | null = await MarkerDAL.selectByUserId(userId);
+            const marker: MarkerModel[] = await MarkerDAL.selectByUserId(userId);
 
             if (marker) {
                 return marker;
             }
 
-            return null;
+            return [];
         } catch (error: any) {
             console.log(`Erro ao buscar marcadores pelo ID do usuário: ${error.message}`);
             throw new Error(error.message);
         }
     }
 
-    static async selectByNoteId(noteId: number): Promise<MarkerModel[] | null> {
+    static async selectByNoteId(noteId: number): Promise<MarkerModel[]> {
         if (noteId <= 0) {
             throw new Error("ID inválido para solicitação");
         }
 
         try {
-            const noteMarkers: MarkerModel[] | null = await MarkerDAL.selectByNoteId(noteId);
+            const noteMarkers: MarkerModel[] = await MarkerDAL.selectByNoteId(noteId);
 
             return noteMarkers;
         } catch (error: any) {
