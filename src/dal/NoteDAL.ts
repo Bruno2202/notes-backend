@@ -1,7 +1,13 @@
+import { MarkerModel } from "../models/MarkerModel.js";
 import { NoteModel } from "../models/NoteModel.js";
+import { MarkerService } from "../services/MarkerService.js";
 import { DB } from "./DB.js";
 
-export class NoteDAL {
+export interface CompleteNotes extends NoteModel {
+    markers: MarkerModel[];
+}
+
+export default class NoteDAL {
     static async select(): Promise<NoteModel[] | null> {
         try {
             const query = {
@@ -55,17 +61,17 @@ export class NoteDAL {
         }
     }
 
-    static async selectByUserId(userId: number): Promise<NoteModel[] | null> {
+    static async selectByUserId(userId: number): Promise<CompleteNotes[]> {
         try {
             const query = {
                 text: "SELECT * FROM notes WHERE user_id = $1 ORDER BY creation_date DESC",
                 values: [userId]
-            }
-
+            };
+    
             const res = await DB.pool.query(query);
-
+    
             if (res.rowCount! > 0) {
-                return res.rows.map(row => new NoteModel(
+                const notes = res.rows.map(row => new NoteModel(
                     row.user_id,
                     row.type_id,
                     row.creation_date,
@@ -73,15 +79,24 @@ export class NoteDAL {
                     row.title,
                     row.content,
                 ));
-            }
+    
+                const completeNotes  = await Promise.all(
+                    notes.map(async (note) => {
+                        const markers = await MarkerService.selectByNoteId(note.getId!);
 
-            return null;
+                        return Object.assign({}, note, { markers });
+                    })
+                );
+    
+                return completeNotes;
+            }
+    
+            return [];
         } catch (error: any) {
             console.error(`DAL - Erro ao buscar notas: ${error.message}`);
-            throw error.message;
+            throw error;
         }
     }
-
     static async create(note: NoteModel): Promise<NoteModel | null> {
         try {
             const query = {

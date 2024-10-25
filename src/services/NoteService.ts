@@ -1,4 +1,5 @@
-import { NoteDAL } from "../dal/NoteDAL.js";
+import NoteDAL, { CompleteNotes } from "../dal/NoteDAL.js";
+import { MarkerModel } from "../models/MarkerModel.js";
 import { NoteModel } from "../models/NoteModel.js";
 
 export class NoteService {
@@ -35,19 +36,19 @@ export class NoteService {
         }
     }
 
-    static async selectByUserId(userId: number): Promise<NoteModel[] | null> {
+    static async selectByUserId(userId: number): Promise<CompleteNotes[]> {
         if (userId <= 0) {
             throw new Error("ID inválido para solicitação");
         }
 
         try {
-            const note: NoteModel[] | null = await NoteDAL.selectByUserId(userId);
+            const notes: CompleteNotes[] = await NoteDAL.selectByUserId(userId);
 
-            if (note) {
-                return note;
+            if (notes) {
+                return notes;
             }
 
-            return null;
+            return [];
         } catch (error: any) {
             console.log(`Erro ao buscar notas pelo ID do usuário: ${error.message}`);
             throw new Error(error.message);
@@ -80,12 +81,12 @@ export class NoteService {
     }
 
     static async delete(id: number): Promise<boolean> {
-        try {   
+        try {
             if (id <= 0) {
                 throw new Error("ID inválido para solicitação");
             }
 
-            const deleted = await NoteDAL.delete(id); 
+            const deleted = await NoteDAL.delete(id);
 
             return deleted;
         } catch (error: any) {

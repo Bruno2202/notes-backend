@@ -1,9 +1,9 @@
-import { UserService } from "../services/UserService.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { NoteRequestBody } from "../routes/noteRoutes.js";
 import { NoteRequestParams } from "../routes/noteRoutes.js";
 import { NoteModel } from "../models/NoteModel.js";
 import { NoteService } from "../services/NoteService.js";
+import { CompleteNotes } from "../dal/NoteDAL.js";
 
 export class NoteController {
     static async select(reply: FastifyReply) {
@@ -42,7 +42,7 @@ export class NoteController {
 
     static async selectByUserId(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
         try {
-            const notes: NoteModel[] | null = await NoteService.selectByUserId(request.params.userId);
+            const notes: CompleteNotes[] = await NoteService.selectByUserId(request.params.userId);
 
             if (notes) {
                 reply.code(200).send(notes);
