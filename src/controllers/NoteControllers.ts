@@ -8,9 +8,9 @@ import { CompleteNotes } from "../dal/NoteDAL.js";
 export class NoteController {
     static async select(reply: FastifyReply) {
         try {
-            const notes: NoteModel[] | null = await NoteService.select();
+            const notes: NoteModel[] = await NoteService.select();
 
-            reply.code(200).send();
+            reply.code(200).send(notes);
         } catch (error: any) {
             console.log(`Erro ao obter notas: ${error.message}`);
             reply.status(500).send({ error: "Erro interno do servidor" });

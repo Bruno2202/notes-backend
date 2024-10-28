@@ -8,7 +8,7 @@ export interface CompleteNotes extends NoteModel {
 }
 
 export default class NoteDAL {
-    static async select(): Promise<NoteModel[] | null> {
+    static async select(): Promise<NoteModel[]> {
         try {
             const query = {
                 text: 'SELECT * FROM notes;'
@@ -27,7 +27,7 @@ export default class NoteDAL {
                 ));
             }
 
-            return null;
+            return [];
         } catch (error: any) {
             console.error("Erro ao selecionar notas:", error);
             throw error;

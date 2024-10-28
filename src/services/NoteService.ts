@@ -1,17 +1,16 @@
 import NoteDAL, { CompleteNotes } from "../dal/NoteDAL.js";
-import { MarkerModel } from "../models/MarkerModel.js";
 import { NoteModel } from "../models/NoteModel.js";
 
 export class NoteService {
-    static async select(): Promise<NoteModel[] | null> {
+    static async select(): Promise<NoteModel[]> {
         try {
-            const notes: NoteModel[] | null = await NoteDAL.select();
+            const notes: NoteModel[] = await NoteDAL.select();
 
             if (notes) {
                 return notes;
             }
 
-            return null;
+            return [];
         } catch (error: any) {
             throw new error.message
         }
