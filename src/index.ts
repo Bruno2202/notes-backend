@@ -23,6 +23,7 @@ server.register(aiNoteRoute);
 
 server.register(fastifyCors, {
     origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
 server.listen({
