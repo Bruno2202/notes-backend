@@ -3,6 +3,15 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 const JW_SECRET: string = process.env.JW_SECRET!;
 
 export class TokenService {
+    static compareSecret(secret: string): boolean {
+        if (secret != JW_SECRET) {
+            console.log(secret, JW_SECRET)
+            return false;
+        }
+        
+        return true;
+    }
+
     static generateToken(user: { id: number, email: string }): string {
         const payload = { id: user.id, email: user.email };
         const token = jwt.sign(payload, JW_SECRET!);

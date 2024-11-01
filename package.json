@@ -6,13 +6,14 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^9.0.1",
+    "@google/generative-ai": "^0.21.0",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1",
     "fastify-cors": "^6.0.3",
