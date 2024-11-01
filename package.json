@@ -2,11 +2,12 @@
   "name": "notes-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.ts",
-    "dev": "tsx watch src/index.ts"
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
