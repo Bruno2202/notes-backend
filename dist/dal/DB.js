@@ -9,6 +9,9 @@ export class DB {
         host: PGHOST,
         port: PGPORT ? parseInt(PGPORT) : 5432,
         database: PGDATABASE,
+        ssl: {
+            rejectUnauthorized: false,
+        },
     });
     static async dbTime() {
         const res = await this.pool.query('SELECT NOW()');
