@@ -9,7 +9,7 @@ export default class TokenMiddleware {
         if (isAuthorized) {
             done();
         } else {
-            reply.code(400).send({ message: "Rota não autorizada: Usuário não autenticado" });
+            reply.code(400).send({ message: "Rota não autorizada: Requisição fora da aplicação" });
         }
     }
 }

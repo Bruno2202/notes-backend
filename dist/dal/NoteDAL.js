@@ -167,5 +167,29 @@ class NoteDAL {
             throw new Error(error);
         }
     }
+    static async getSharedNotesWithMe(userId) {
+        try {
+            const res = await prisma.notes.findMany({
+                where: {
+                    sharedNotes: {
+                        some: {
+                            sharedWith: userId
+                        }
+                    }
+                },
+                include: {
+                    markers: true
+                }
+            });
+            if (res.length > 0) {
+                return res.map(note => new NoteModel_js_1.NoteModel(note.userId, note.typeId, note.creationDate, note.id, note.title, note.content, note.color, note.markers.map(marker => new MarkerModel_js_1.MarkerModel(marker.userId, marker.description, marker.id))));
+            }
+            return [];
+        }
+        catch (error) {
+            console.log(`Erro ao selecionar compartilhamento: ${error}`);
+            throw new Error(error.message);
+        }
+    }
 }
 exports.default = NoteDAL;

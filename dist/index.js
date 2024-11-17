@@ -12,6 +12,7 @@ const authRoutes_js_1 = __importDefault(require("./routes/authRoutes.js"));
 const noteRoutes_js_1 = __importDefault(require("./routes/noteRoutes.js"));
 const markerRoutes_js_1 = __importDefault(require("./routes/markerRoutes.js"));
 const ApiRoutes_js_1 = __importDefault(require("./routes/ApiRoutes.js"));
+const sharedNotesRoutes_js_1 = __importDefault(require("./routes/sharedNotesRoutes.js"));
 const prisma = new client_1.PrismaClient();
 const server = (0, fastify_1.fastify)();
 server.register(userRoutes_js_1.default);
@@ -19,6 +20,7 @@ server.register(tokenRoutes_js_1.default);
 server.register(authRoutes_js_1.default);
 server.register(noteRoutes_js_1.default);
 server.register(markerRoutes_js_1.default);
+server.register(sharedNotesRoutes_js_1.default);
 server.register(ApiRoutes_js_1.default);
 server.register(cors_1.default, {
     origin: true,

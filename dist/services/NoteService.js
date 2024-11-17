@@ -7,6 +7,8 @@ exports.NoteService = void 0;
 const uuid_1 = require("uuid");
 const NoteDAL_js_1 = __importDefault(require("../dal/NoteDAL.js"));
 const MarkerService_js_1 = require("./MarkerService.js");
+const UserService_js_1 = require("./UserService.js");
+const TokenService_js_1 = require("./TokenService.js");
 class NoteService {
     static async select() {
         try {
@@ -125,6 +127,21 @@ class NoteService {
         }
         try {
             return await NoteDAL_js_1.default.removeMarkerFromNote(noteId, markerId);
+        }
+        catch (error) {
+            throw new Error(error.message);
+        }
+    }
+    static async getSharedNotesWithMe(userId, authorization) {
+        if (await UserService_js_1.UserService.selectById(userId) === null) {
+            throw new Error("Usuário não econtrado");
+        }
+        const { id } = TokenService_js_1.TokenService.getTokenData(authorization);
+        if (userId != id) {
+            throw new Error("Não é possível visualizar as notas compartilhadas de outros usuários");
+        }
+        try {
+            return await NoteDAL_js_1.default.getSharedNotesWithMe(userId);
         }
         catch (error) {
             throw new Error(error.message);

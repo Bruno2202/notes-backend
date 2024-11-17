@@ -9,7 +9,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 class TokenService {
     static compareSecret(secret) {
         if (secret != JWT_SECRET) {
-            console.log(secret, JWT_SECRET);
             return false;
         }
         return true;

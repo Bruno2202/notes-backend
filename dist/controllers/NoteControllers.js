@@ -180,5 +180,31 @@ class NoteController {
             });
         }
     }
+    static async getSharedNotesWithMe(request, reply) {
+        const userId = request.params.userId;
+        const { authorization } = request.headers;
+        try {
+            const notes = await NoteService_js_1.NoteService.getSharedNotesWithMe(userId, authorization);
+            if (notes) {
+                reply.code(200).send({
+                    notes
+                });
+            }
+        }
+        catch (error) {
+            switch (error.message) {
+                case "ID inválido para busca":
+                case "Usuário não econtrado":
+                case "Não é possível visualizar as notas compartilhadas de outros usuários":
+                    reply.code(400).send({
+                        error: error.message,
+                    });
+            }
+            console.log(`Erro ao buscar notas compartilhadas: ${error.message}`);
+            reply.code(500).send({
+                error: "Erro interno do servidor.",
+            });
+        }
+    }
 }
 exports.NoteController = NoteController;

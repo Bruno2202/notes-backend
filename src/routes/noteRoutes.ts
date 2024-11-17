@@ -1,9 +1,9 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { NoteController } from "../controllers/NoteControllers.js";
 import AuthMiddleware from "../middleswares/AuthMiddleware.js";
-import { MarkerRequestBody, MarkerRequestParams } from "./markerRoutes.js";
 
 export interface NoteRequestBody {
+    userId: string;
     note: {
         userId: string;
         typeId: number;
@@ -20,7 +20,7 @@ export interface NoteRequestParams {
     id: string;
 }
 
-export interface MarkerAndNoteRequestParams  {
+export interface MarkerAndNoteRequestParams {
     noteId: string;
     markerId: string;
 }
@@ -28,7 +28,7 @@ export interface MarkerAndNoteRequestParams  {
 export default async function noteRoutes(fastify: FastifyInstance) {
     fastify.get(
         '/notes',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest, reply: FastifyReply) => {
             await NoteController.select(reply);
         }
@@ -36,7 +36,7 @@ export default async function noteRoutes(fastify: FastifyInstance) {
 
     fastify.get<{ Params: NoteRequestParams }>(
         '/note/:id',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) => {
             await NoteController.selectById(request, reply);
         }
@@ -44,7 +44,7 @@ export default async function noteRoutes(fastify: FastifyInstance) {
 
     fastify.get<{ Params: NoteRequestParams }>(
         '/notes/user/:userId',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) => {
             await NoteController.selectByUserId(request, reply);
         }
@@ -52,7 +52,7 @@ export default async function noteRoutes(fastify: FastifyInstance) {
 
     fastify.post<{ Body: NoteRequestBody }>(
         '/note',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Body: NoteRequestBody }>, reply: FastifyReply) => {
             await NoteController.create(request, reply);
         }
@@ -60,7 +60,7 @@ export default async function noteRoutes(fastify: FastifyInstance) {
 
     fastify.put<{ Body: NoteRequestBody }>(
         '/note',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Body: NoteRequestBody }>, reply: FastifyReply) => {
             await NoteController.update(request, reply);
         }
@@ -68,7 +68,7 @@ export default async function noteRoutes(fastify: FastifyInstance) {
 
     fastify.delete<{ Params: NoteRequestParams }>(
         '/note/:id',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) => {
             await NoteController.delete(request, reply);
         }
@@ -76,7 +76,7 @@ export default async function noteRoutes(fastify: FastifyInstance) {
 
     fastify.put<{ Params: MarkerAndNoteRequestParams }>(
         '/note/:noteId/marker/:markerId/add',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: MarkerAndNoteRequestParams }>, reply: FastifyReply) => {
             await NoteController.addMarkerToNote(request, reply);
         }
@@ -84,9 +84,17 @@ export default async function noteRoutes(fastify: FastifyInstance) {
 
     fastify.put<{ Params: MarkerAndNoteRequestParams }>(
         '/note/:noteId/marker/:markerId/remove',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: MarkerAndNoteRequestParams }>, reply: FastifyReply) => {
             await NoteController.removeMarkerFromNote(request, reply);
         }
     );
+
+    fastify.get<{ Params: NoteRequestParams }>(
+        '/notes/shared-with/:userId',
+        { preHandler: AuthMiddleware.verifyAuth },
+        async (request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) => {
+            await NoteController.getSharedNotesWithMe(request, reply)
+        }
+    )
 }

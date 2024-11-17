@@ -5,7 +5,6 @@ const JWT_SECRET: string = process.env.JWT_SECRET!;
 export class TokenService {
     static compareSecret(secret: string): boolean {
         if (secret != JWT_SECRET) {
-            console.log(secret, JWT_SECRET)
             return false;
         }
 

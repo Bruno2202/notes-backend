@@ -13,7 +13,7 @@ export interface TokenRequestBody {
 export default async function tokenRoutes(fastify: FastifyInstance) {
     fastify.post<{ Body: TokenRequestBody }>(
         '/token',
-        // { preHandler: TokenMiddleware.verifySecret },
+        { preHandler: TokenMiddleware.verifySecret },
         async (request: FastifyRequest<{ Body: TokenRequestBody }>, reply: FastifyReply) => {
             TokenController.validateToken(request, reply);
         }
@@ -21,7 +21,7 @@ export default async function tokenRoutes(fastify: FastifyInstance) {
 
     fastify.post<{ Body: TokenRequestBody }>(
         '/token/generate',
-        // { preHandler: TokenMiddleware.verifySecret },
+        { preHandler: TokenMiddleware.verifySecret },
         async (request: FastifyRequest<{ Body: TokenRequestBody }>, reply: FastifyReply) => {
             TokenController.generateToken(request, reply);
         }
@@ -29,7 +29,7 @@ export default async function tokenRoutes(fastify: FastifyInstance) {
 
     fastify.post<{ Body: TokenRequestBody }>(
         '/token/data',
-        // { preHandler: TokenMiddleware.verifySecret },
+        { preHandler: TokenMiddleware.verifySecret },
         async (request: FastifyRequest<{ Body: TokenRequestBody }>, reply: FastifyReply) => {
             TokenController.getTokenData(request, reply);
         }

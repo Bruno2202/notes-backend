@@ -3,6 +3,8 @@ import NoteDAL from "../dal/NoteDAL.js";
 import { NoteModel } from "../models/NoteModel.js";
 import { MarkerModel } from "../models/MarkerModel.js";
 import { MarkerService } from "./MarkerService.js";
+import { UserService } from "./UserService.js";
+import { TokenService } from "./TokenService.js";
 
 export class NoteService {
     static async select(): Promise<NoteModel[]> {
@@ -144,6 +146,24 @@ export class NoteService {
 
         try {
             return await NoteDAL.removeMarkerFromNote(noteId, markerId);
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
+    static async getSharedNotesWithMe(userId: string, authorization: string): Promise<NoteModel[]> {
+        if (await UserService.selectById(userId) === null) {
+            throw new Error("Usuário não econtrado")
+        }
+
+        const { id } = TokenService.getTokenData(authorization);
+
+        if (userId != id) {
+            throw new Error("Não é possível visualizar as notas compartilhadas de outros usuários")
+        }
+
+        try {
+            return await NoteDAL.getSharedNotesWithMe(userId);
         } catch (error: any) {
             throw new Error(error.message);
         }

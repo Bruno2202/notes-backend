@@ -8,6 +8,7 @@ import authRoutes from './routes/authRoutes.js';
 import noteRoutes from './routes/noteRoutes.js';
 import markerRoutes from './routes/markerRoutes.js';
 import ApiRoutes from './routes/ApiRoutes.js';
+import sharedNotesRoutes from './routes/sharedNotesRoutes.js';
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -17,6 +18,7 @@ server.register(tokenRoutes);
 server.register(authRoutes);
 server.register(noteRoutes);
 server.register(markerRoutes);
+server.register(sharedNotesRoutes)
 server.register(ApiRoutes);
 
 server.register(fastifyCors, {

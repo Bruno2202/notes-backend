@@ -15,8 +15,10 @@ model Users {
     pic          String?
     creationDate DateTime @default(now()) @map("creation_date")
 
-    markers Markers[]
-    notes   Notes[]
+    markers    Markers[]
+    notes      Notes[]
+    sharedBy   SharedNotes[] @relation("SharedBy")
+    sharedWith SharedNotes[] @relation("SharedWith")
 
     @@map("users")
 }
@@ -31,8 +33,9 @@ model Notes {
     creationDate DateTime @default(now()) @map("creation_date")
 
     markers     Markers[]
-    noteTypesId NoteTypes @relation(fields: [typeId], references: [id])
-    user        Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    sharedNotes SharedNotes[]
+    noteTypesId NoteTypes     @relation(fields: [typeId], references: [id])
+    user        Users         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("notes")
 }
@@ -55,4 +58,19 @@ model NoteTypes {
     Notes Notes[]
 
     @@map("note_types")
+}
+
+model SharedNotes {
+    id         String   @id @default(uuid())
+    noteId     String   @map("note_id")
+    sharedWith String   @map("shared_with")
+    sharedBy   String   @map("shared_by")
+    sharedAt   DateTime @default(now()) @map("shared_at")
+
+    note     Notes @relation(fields: [noteId], references: [id], onDelete: Cascade)
+    receiver Users @relation("SharedWith", fields: [sharedWith], references: [id], onDelete: Cascade)
+    sender   Users @relation("SharedBy", fields: [sharedBy], references: [id], onDelete: Cascade)
+
+    @@unique([noteId, sharedWith])
+    @@map("shared_notes")
 }

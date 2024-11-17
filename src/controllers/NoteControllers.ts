@@ -5,6 +5,7 @@ import { NoteModel } from "../models/NoteModel.js";
 import { NoteService } from "../services/NoteService.js";
 import { MarkerRequestBody, MarkerRequestParams } from "../routes/markerRoutes.js";
 import { MarkerModel } from "../models/MarkerModel.js";
+import { Notes } from "@prisma/client";
 
 export class NoteController {
     static async select(reply: FastifyReply) {
@@ -205,6 +206,35 @@ export class NoteController {
             reply.code(500).send({
                 error: "Erro interno do servidor.",
                 removed: false
+            });
+        }
+    }
+
+    static async getSharedNotesWithMe(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
+        const userId = request.params.userId
+        const { authorization } = request.headers;
+
+        try {
+            const notes: NoteModel[] = await NoteService.getSharedNotesWithMe(userId, authorization as string);
+
+            if (notes) {
+                reply.code(200).send({
+                    notes
+                })
+            }
+        } catch (error: any) {
+            switch (error.message) {
+                case "ID inválido para busca":
+                case "Usuário não econtrado":
+                case "Não é possível visualizar as notas compartilhadas de outros usuários":
+                    reply.code(400).send({
+                        error: error.message,
+                    });
+            }
+
+            console.log(`Erro ao buscar notas compartilhadas: ${error.message}`);
+            reply.code(500).send({
+                error: "Erro interno do servidor.",
             });
         }
     }

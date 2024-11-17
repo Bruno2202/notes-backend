@@ -19,7 +19,7 @@ export interface MarkerRequestParams {
 export default async function markerRoutes(fastify: FastifyInstance) {
     fastify.get<{ Params: MarkerRequestParams }>(
         '/marker/:id',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) => {
             await MarkerController.selectById(request, reply);
         }
@@ -27,6 +27,7 @@ export default async function markerRoutes(fastify: FastifyInstance) {
 
     fastify.get<{ Params: MarkerRequestParams }>(
         '/markers/user/:userId',
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) => {
             await MarkerController.selectByUserId(request, reply);
         }
@@ -34,7 +35,7 @@ export default async function markerRoutes(fastify: FastifyInstance) {
 
     fastify.get<{ Params: MarkerRequestParams }>(
         '/markers/note/:noteId',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) => {
             await MarkerController.selectByNoteId(request, reply);
         }
@@ -42,7 +43,7 @@ export default async function markerRoutes(fastify: FastifyInstance) {
 
     fastify.post<{ Body: MarkerRequestBody }>(
         '/marker',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Body: MarkerRequestBody }>, reply: FastifyReply) => {
             await MarkerController.create(request, reply);
         }
@@ -50,7 +51,7 @@ export default async function markerRoutes(fastify: FastifyInstance) {
 
     fastify.put<{ Body: MarkerRequestBody }>(
         '/marker',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Body: MarkerRequestBody }>, reply: FastifyReply) => {
             await MarkerController.update(request, reply);
         }
@@ -58,7 +59,7 @@ export default async function markerRoutes(fastify: FastifyInstance) {
 
     fastify.delete<{ Params: MarkerRequestParams }>(
         '/marker/:id',
-        // { preHandler: AuthMiddleware.verifyAuth },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) => {
             await MarkerController.delete(request, reply);
         }
