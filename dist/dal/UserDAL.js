@@ -68,8 +68,7 @@ class UserDAL {
             return null;
         }
         catch (error) {
-            console.error(`DAL - Erro ao criar usuário: ${error.message}`);
-            throw error;
+            throw new Error(error);
         }
     }
     static async update(user) {

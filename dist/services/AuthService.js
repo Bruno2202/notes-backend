@@ -43,8 +43,7 @@ class AuthService {
             return null;
         }
         catch (error) {
-            console.log(`Erro ao criar usuário: ${error.message}`);
-            throw new Error("Não foi possível criar usuário. Tente novamente mais tarde");
+            throw new Error(error);
         }
     }
     static async hashPassword(password) {
