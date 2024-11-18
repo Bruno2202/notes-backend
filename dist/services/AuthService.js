@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 class AuthService {
     static async validateLogin(user) {
         if (!user.email || !user.password) {
-            throw new Error("É necessário informar um email e senha para logar");
+            throw new Error("É necessário informar um email e uma senha para logar");
         }
         try {
             if (!UserService_js_1.UserService.isValidEmail(user.email)) {

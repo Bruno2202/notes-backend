@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 export class AuthService {
     static async validateLogin(user: { email: string, password: string }): Promise<UserModel | null> {
         if (!user.email || !user.password) {
-            throw new Error("É necessário informar um email e senha para logar");
+            throw new Error("É necessário informar um email e uma senha para logar");
         }
 
         try {
@@ -65,8 +65,7 @@ export class AuthService {
 
             return null;
         } catch (error: any) {
-            console.log(`Erro ao criar usuário: ${error.message}`);
-            throw new Error("Não foi possível criar usuário. Tente novamente mais tarde");
+            throw new Error(error)
         }
     }
 

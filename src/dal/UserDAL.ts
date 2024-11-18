@@ -102,8 +102,7 @@ export class UserDAL {
 
             return null;
         } catch (error: any) {
-            console.error(`DAL - Erro ao criar usuário: ${error.message}`);
-            throw error;
+            throw new Error(error);
         }
     }
 
