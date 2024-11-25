@@ -24,7 +24,7 @@ export interface UserRequestBody {
 export default async function userRoutes(fastify: FastifyInstance) {
     fastify.get(
         '/users',
-        { preHandler: TokenMiddleware.verifySecret },
+        { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest, reply: FastifyReply) => {
             await UserController.select(reply);
         });

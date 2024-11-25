@@ -1,5 +1,5 @@
 import fastify, { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { sharedNotesController } from "../controllers/SharedNotesController";
+import { sharedNotesController, ShareNoteReply } from "../controllers/SharedNotesController";
 import AuthMiddleware from "../middleswares/AuthMiddleware";
 
 export interface SharedNotesRequestBody {
@@ -9,23 +9,19 @@ export interface SharedNotesRequestBody {
     sharedAt: Date;
 }
 
-export interface SharedNotesRequestParams {
-    id: string;
-}
-
 export default async function sharedNotesRoutes(fastify: FastifyInstance) {
-    fastify.post<{ Body: SharedNotesRequestBody }>(
+    fastify.post<{ Body: SharedNotesRequestBody, Reply: ShareNoteReply }>(
         '/share-note',
         { preHandler: AuthMiddleware.verifyAuth },
-        async (request: FastifyRequest<{ Body: SharedNotesRequestBody }>, reply: FastifyReply) => {
+        async (request: FastifyRequest<{ Body: SharedNotesRequestBody }>, reply: FastifyReply<{ Reply: ShareNoteReply }>) => {
             await sharedNotesController.shareNote(request, reply)
         }
     )
 
-    fastify.delete<{ Params: SharedNotesRequestParams }>(
-        '/unshare-note/:id',
+    fastify.delete<{ Body: SharedNotesRequestBody, Reply: ShareNoteReply }>(
+        '/unshare-note',
         { preHandler: AuthMiddleware.verifyAuth },
-        async (request: FastifyRequest<{ Params: SharedNotesRequestParams }>, reply: FastifyReply) => {
+        async (request: FastifyRequest<{ Body: SharedNotesRequestBody }>, reply: FastifyReply<{ Reply: ShareNoteReply }>) => {
             await sharedNotesController.unshareNote(request, reply)
         }
     )

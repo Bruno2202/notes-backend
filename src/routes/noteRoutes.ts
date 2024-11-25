@@ -96,5 +96,5 @@ export default async function noteRoutes(fastify: FastifyInstance) {
         async (request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) => {
             await NoteController.getSharedNotesWithMe(request, reply)
         }
-    )
+    );
 }

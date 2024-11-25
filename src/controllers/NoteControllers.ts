@@ -6,6 +6,7 @@ import { NoteService } from "../services/NoteService.js";
 import { MarkerRequestBody, MarkerRequestParams } from "../routes/markerRoutes.js";
 import { MarkerModel } from "../models/MarkerModel.js";
 import { Notes } from "@prisma/client";
+import { Console } from "console";
 
 export class NoteController {
     static async select(reply: FastifyReply) {
@@ -118,6 +119,8 @@ export class NoteController {
     }
 
     static async delete(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
+        console.log(`Deletando nota: ${request.params.id}`)
+        
         try {
             const deleted = await NoteService.delete(request.params.id);
 
