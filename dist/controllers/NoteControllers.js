@@ -181,11 +181,11 @@ class NoteController {
             });
         }
     }
-    static async getSharedNotesWithMe(request, reply) {
+    static async getSharedNotes(request, reply) {
         const userId = request.params.userId;
         const { authorization } = request.headers;
         try {
-            const notes = await NoteService_js_1.NoteService.getSharedNotesWithMe(userId, authorization);
+            const notes = await NoteService_js_1.NoteService.getSharedNotes(userId, authorization);
             if (notes) {
                 reply.code(200).send({
                     notes

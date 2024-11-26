@@ -167,7 +167,7 @@ class NoteDAL {
             throw new Error(error);
         }
     }
-    static async getSharedNotesWithMe(userId) {
+    static async getSharedNotes(userId) {
         try {
             const res = await prisma.notes.findMany({
                 where: {

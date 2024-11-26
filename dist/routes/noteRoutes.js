@@ -32,6 +32,6 @@ async function noteRoutes(fastify) {
         await NoteControllers_js_1.NoteController.removeMarkerFromNote(request, reply);
     });
     fastify.get('/notes/shared-with/:userId', { preHandler: AuthMiddleware_js_1.default.verifyAuth }, async (request, reply) => {
-        await NoteControllers_js_1.NoteController.getSharedNotesWithMe(request, reply);
+        await NoteControllers_js_1.NoteController.getSharedNotes(request, reply);
     });
 }

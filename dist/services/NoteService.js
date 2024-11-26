@@ -132,7 +132,7 @@ class NoteService {
             throw new Error(error.message);
         }
     }
-    static async getSharedNotesWithMe(userId, authorization) {
+    static async getSharedNotes(userId, authorization) {
         if (await UserService_js_1.UserService.selectById(userId) === null) {
             throw new Error("Usuário não econtrado");
         }
@@ -141,7 +141,7 @@ class NoteService {
             throw new Error("Não é possível visualizar as notas compartilhadas de outros usuários");
         }
         try {
-            return await NoteDAL_js_1.default.getSharedNotesWithMe(userId);
+            return await NoteDAL_js_1.default.getSharedNotes(userId);
         }
         catch (error) {
             throw new Error(error.message);
