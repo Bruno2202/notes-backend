@@ -151,7 +151,7 @@ export class NoteService {
         }
     }
 
-    static async getSharedNotesWithMe(userId: string, authorization: string): Promise<NoteModel[]> {
+    static async getSharedNotes(userId: string, authorization: string): Promise<NoteModel[]> {
         if (await UserService.selectById(userId) === null) {
             throw new Error("Usuário não econtrado")
         }
@@ -163,7 +163,7 @@ export class NoteService {
         }
 
         try {
-            return await NoteDAL.getSharedNotesWithMe(userId);
+            return await NoteDAL.getSharedNotes(userId);
         } catch (error: any) {
             throw new Error(error.message);
         }

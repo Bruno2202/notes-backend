@@ -233,7 +233,7 @@ export default class NoteDAL {
         }
     }
 
-    static async getSharedNotesWithMe(userId: string): Promise<NoteModel[]> {
+    static async getSharedNotes(userId: string): Promise<NoteModel[]> {
         try {
             const res = await prisma.notes.findMany({
                 where: {

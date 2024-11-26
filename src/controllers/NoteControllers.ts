@@ -213,12 +213,12 @@ export class NoteController {
         }
     }
 
-    static async getSharedNotesWithMe(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
+    static async getSharedNotes(request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) {
         const userId = request.params.userId
         const { authorization } = request.headers;
 
         try {
-            const notes: NoteModel[] = await NoteService.getSharedNotesWithMe(userId, authorization as string);
+            const notes: NoteModel[] = await NoteService.getSharedNotes(userId, authorization as string);
 
             if (notes) {
                 reply.code(200).send({

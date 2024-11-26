@@ -94,7 +94,7 @@ export default async function noteRoutes(fastify: FastifyInstance) {
         '/notes/shared-with/:userId',
         { preHandler: AuthMiddleware.verifyAuth },
         async (request: FastifyRequest<{ Params: NoteRequestParams }>, reply: FastifyReply) => {
-            await NoteController.getSharedNotesWithMe(request, reply)
+            await NoteController.getSharedNotes(request, reply)
         }
     );
 }
