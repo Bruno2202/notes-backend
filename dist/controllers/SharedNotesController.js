@@ -8,7 +8,16 @@ class sharedNotesController {
         try {
             const shared = await SharedNotesService_1.SharedNotesService.shareNote(sharedBy, sharedWith, noteId, sharedAt);
             if (shared) {
-                reply.code(200).send({ message: "Nota compartilhada com sucesso!" });
+                reply.code(200).send({
+                    success: shared,
+                    message: "Nota compartilhada com sucesso!"
+                });
+            }
+            else {
+                reply.code(400).send({
+                    success: shared,
+                    message: "Não foi possível compartilhar a nota",
+                });
             }
         }
         catch (error) {
@@ -17,32 +26,47 @@ class sharedNotesController {
                 case "O usuário remetente não existe":
                 case "O usuário destinatário não existe":
                 case "A nota a ser compartilhada não existe":
-                    reply.code(400).send({ error: error.message });
+                    reply.code(400).send({
+                        success: false,
+                        error: error.message
+                    });
                     break;
                 default:
                     console.log(`Erro ao compartilhar nota: ${error.message}`);
-                    reply.code(500).send({ error: "Erro interno do servidor" });
+                    reply.code(500).send({
+                        success: false,
+                        error: "Erro interno do servidor"
+                    });
                     break;
             }
         }
     }
     static async unshareNote(request, reply) {
-        const { id } = request.params;
+        const { noteId, sharedWith } = request.body;
         try {
-            const shared = await SharedNotesService_1.SharedNotesService.unshareNote(id);
+            const shared = await SharedNotesService_1.SharedNotesService.unshareNote(noteId, sharedWith);
             if (shared) {
-                reply.code(200).send({ message: "Nota descompartilhada com sucesso!" });
+                reply.code(200).send({
+                    success: true,
+                    message: "Nota descompartilhada com sucesso!"
+                });
             }
         }
         catch (error) {
             switch (error.message) {
                 case "ID inválido para busca":
                 case "Esse compartilhamento não existe":
-                    reply.code(400).send({ error: error.message });
+                    reply.code(400).send({
+                        success: false,
+                        error: error.message
+                    });
                     break;
                 default:
                     console.log(`Erro ao descompartilhar nota: ${error.message}`);
-                    reply.code(500).send({ error: "Erro interno do servidor" });
+                    reply.code(500).send({
+                        success: false,
+                        error: "Erro interno do servidor"
+                    });
                     break;
             }
         }

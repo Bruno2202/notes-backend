@@ -21,11 +21,12 @@ class SharedNotesDAL {
             throw new Error(error.message);
         }
     }
-    static async unshareNote(id) {
+    static async unshareNote(noteId, sharedWith) {
         try {
-            const res = await prisma.sharedNotes.delete({
+            const res = await prisma.sharedNotes.deleteMany({
                 where: {
-                    id: id
+                    noteId: noteId,
+                    sharedWith: sharedWith
                 }
             });
             return !!res;
@@ -42,6 +43,22 @@ class SharedNotesDAL {
                     id: id
                 }
             });
+            return !!res;
+        }
+        catch (error) {
+            console.log(`Erro ao selecionar compartilhamento: ${error}`);
+            throw new Error(error.message);
+        }
+    }
+    static async selectByNoteAndUserId(noteId, userId) {
+        try {
+            const res = await prisma.sharedNotes.findMany({
+                where: {
+                    noteId: noteId,
+                    sharedWith: userId
+                }
+            });
+            console.log(res);
             return !!res;
         }
         catch (error) {

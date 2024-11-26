@@ -1,16 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { AuthService } from '../services/AuthService.js';
-import { AuthRequestBody } from '../routes/authRoutes.js';
+import { AuthReply, AuthRequestBody } from '../routes/authRoutes.js';
 import { UserModel } from '../models/UserModel.js';
 import { TokenService } from '../services/TokenService.js';
 
-interface AuthReply {
-    success: boolean;
-    message?: string;
-    error?: string;
-    user?: UserModel
-    token?: string
-}
 
 export class AuthController {
     static async login(request: FastifyRequest<{ Body: AuthRequestBody }>, reply: FastifyReply<{ Reply: AuthReply }>) {

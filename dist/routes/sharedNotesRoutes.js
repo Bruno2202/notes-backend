@@ -10,7 +10,7 @@ async function sharedNotesRoutes(fastify) {
     fastify.post('/share-note', { preHandler: AuthMiddleware_1.default.verifyAuth }, async (request, reply) => {
         await SharedNotesController_1.sharedNotesController.shareNote(request, reply);
     });
-    fastify.delete('/unshare-note/:id', { preHandler: AuthMiddleware_1.default.verifyAuth }, async (request, reply) => {
+    fastify.delete('/unshare-note', { preHandler: AuthMiddleware_1.default.verifyAuth }, async (request, reply) => {
         await SharedNotesController_1.sharedNotesController.unshareNote(request, reply);
     });
 }

@@ -23,12 +23,12 @@ class SharedNotesService {
             throw new Error(error.message);
         }
     }
-    static async unshareNote(id) {
-        if (!await SharedNotesService.selectById(id)) {
+    static async unshareNote(noteId, sharedWith) {
+        if (!await this.selectByNoteAndUserId(noteId, sharedWith)) {
             throw new Error("Esse compartilhamento não existe");
         }
         try {
-            return await SharedNotesDAL_1.SharedNotesDAL.unshareNote(id);
+            return await SharedNotesDAL_1.SharedNotesDAL.unshareNote(noteId, sharedWith);
         }
         catch (error) {
             throw new Error(error.message);
@@ -40,6 +40,17 @@ class SharedNotesService {
         }
         try {
             return await SharedNotesDAL_1.SharedNotesDAL.selectById(id);
+        }
+        catch (error) {
+            throw new Error(error.message);
+        }
+    }
+    static async selectByNoteAndUserId(noteId, userId) {
+        if (!(0, uuid_1.validate)(noteId) || !(0, uuid_1.validate)(userId)) {
+            throw new Error("ID inválido para solicitação");
+        }
+        try {
+            return await SharedNotesDAL_1.SharedNotesDAL.selectByNoteAndUserId(noteId, userId);
         }
         catch (error) {
             throw new Error(error.message);

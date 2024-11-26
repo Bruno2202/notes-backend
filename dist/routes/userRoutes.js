@@ -8,7 +8,7 @@ const UserController_js_1 = require("../controllers/UserController.js");
 const TokenMiddleware_js_1 = __importDefault(require("../middleswares/TokenMiddleware.js"));
 const AuthMiddleware_js_1 = __importDefault(require("../middleswares/AuthMiddleware.js"));
 async function userRoutes(fastify) {
-    fastify.get('/users', { preHandler: TokenMiddleware_js_1.default.verifySecret }, async (request, reply) => {
+    fastify.get('/users', { preHandler: AuthMiddleware_js_1.default.verifyAuth }, async (request, reply) => {
         await UserController_js_1.UserController.select(reply);
     });
     fastify.get('/user/:id', { preHandler: AuthMiddleware_js_1.default.verifyAuth }, async (request, reply) => {
