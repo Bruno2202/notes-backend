@@ -83,14 +83,8 @@ export class MarkerController {
                 reply.code(400).send({ error: "Não foi possível criar marcador" });
             }
         } catch (error: any) {
-            switch (error.message) {
-                case "Marcador não pode ter descrição vazia":
-                    reply.code(500).send({ error: error.message, marker: null });
-
-                default:
-                    console.log(`Erro ao criar marcador: ${error.message}`);
-                    reply.code(500).send({ error: "Erro interno do servidor." });
-            }
+            console.log(`Erro ao criar marcador: ${error.message}`);
+            reply.code(500).send({ error: "Erro interno do servidor." });
         }
     }
 
@@ -127,9 +121,9 @@ export class MarkerController {
 
     static async delete(request: FastifyRequest<{ Params: MarkerRequestParams }>, reply: FastifyReply) {
         try {
-
+            
             const deleted = await MarkerService.delete(request.params.id);
-
+            
             if (deleted) {
                 reply.code(204);
             }

@@ -54,9 +54,6 @@ class MarkerService {
         }
     }
     static async create(marker) {
-        if (!marker.getDescription) {
-            throw new Error("Marcador não pode ter descrição vazia");
-        }
         try {
             const newMarker = await MarkerDAL_js_1.MarkerDAL.create(marker);
             if (newMarker) {
