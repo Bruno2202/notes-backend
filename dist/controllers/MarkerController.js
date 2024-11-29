@@ -78,8 +78,13 @@ class MarkerController {
             }
         }
         catch (error) {
-            console.log(`Erro ao criar marcador: ${error.message}`);
-            reply.code(500).send({ error: "Erro interno do servidor." });
+            switch (error.message) {
+                case "Marcador não pode ter descrição vazia":
+                    reply.code(500).send({ error: error.message, marker: null });
+                default:
+                    console.log(`Erro ao criar marcador: ${error.message}`);
+                    reply.code(500).send({ error: "Erro interno do servidor." });
+            }
         }
     }
     static async update(request, reply) {

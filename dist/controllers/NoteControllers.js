@@ -94,7 +94,6 @@ class NoteController {
         }
     }
     static async delete(request, reply) {
-        console.log(`Deletando nota: ${request.params.id}`);
         try {
             const deleted = await NoteService_js_1.NoteService.delete(request.params.id);
             if (deleted) {
