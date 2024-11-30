@@ -62,6 +62,10 @@ export class MarkerService {
     }
 
     static async create(marker: MarkerModel): Promise<MarkerModel | null> {
+        if (!marker.getDescription) {
+            throw new Error("Não é possível criar marcador sem descrição")
+        }
+        
         try {
             const newMarker: MarkerModel | null = await MarkerDAL.create(marker);
 
