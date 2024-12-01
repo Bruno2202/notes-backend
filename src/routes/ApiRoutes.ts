@@ -10,4 +10,13 @@ export default async function ApiRoutes(fastify: FastifyInstance) {
             })
         }
     )
+
+    fastify.get(
+        '/status',
+        async (request: FastifyRequest, reply: FastifyReply) => {
+            reply.code(200).send({
+                status: 'OK',
+            })
+        }
+    )
 }

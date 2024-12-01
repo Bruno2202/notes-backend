@@ -37,13 +37,8 @@ server.listen({
     console.log(`Server running at ${address} 🚀`);
 });
 
-// (async () => {
-//     const res = await prisma.sharedNotes.findMany({
-//         where: {
-//             noteId: "b155dead-81a5-44f9-8d9d-9facc669ae90",
-//             sharedWith: "bd7fa92a-640f-418b-aa76-91e5b91c2a2b"
-//         }
-//     });
-
-//     console.log(res);
-// })()
+setInterval(async () => {
+    await fetch(`${process.env.APIHOST}/status`, {
+        method: 'GET',
+    });
+}, 10000);
