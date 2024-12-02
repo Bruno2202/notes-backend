@@ -8,4 +8,9 @@ async function ApiRoutes(fastify) {
             content: 'Todas as requisições só podem ser feitas através do aplicativo'
         });
     });
+    fastify.get('/status', async (request, reply) => {
+        reply.code(200).send({
+            status: 'OK',
+        });
+    });
 }

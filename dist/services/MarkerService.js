@@ -54,6 +54,9 @@ class MarkerService {
         }
     }
     static async create(marker) {
+        if (!marker.getDescription) {
+            throw new Error("Não é possível criar marcador sem descrição");
+        }
         try {
             const newMarker = await MarkerDAL_js_1.MarkerDAL.create(marker);
             if (newMarker) {
