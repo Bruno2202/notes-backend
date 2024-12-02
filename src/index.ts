@@ -38,7 +38,7 @@ server.listen({
 });
 
 setInterval(async () => {
-    await fetch(`${process.env.APIHOST}/status`, {
+    await fetch(`http://localhost:3333/status`, {
         method: 'GET',
     });
 }, 10000);
