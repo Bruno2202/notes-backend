@@ -17,4 +17,5 @@ Esta é a API do Notes, uma aplicação para gerenciar sua anotações. Ela forn
 * Node.js com Typescript;
 * Fastify: Framework para construção da API;
 * Banco de dados: PostgreSQL;
-* Autentiação JWT.
+* Autentiação: JWT.
+* Prisma ORM;
